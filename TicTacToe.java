@@ -1,70 +1,28 @@
+// Jerry You
 import java.util.Scanner;
 
 public class TicTacToe {
-    public static void main(String[] args) {
-        Scanner inputScanner = new Scanner(System.in);
-        String[][] gameBoard = new String[3][3];
-        gameBoard = initializeBoard(gameBoard);
-        int currentRound = 1;
-        //Make it run at all times to play the game until something happens
-        while (true) {
-            while (true) {
-                // Display currentround and the game board
-                System.out.println("Round " + currentRound + ":");
-                displayBoard(gameBoard);
-
-                // Check if the game is complete
-                if (isGameComplete(gameBoard)) {
-                    break;
-                }
-
-                // Player X's turn
-                if (currentRound % 2 != 0) {
-                    while (true) {
-                        System.out.println("Player X, make your move (row, col):");
-                        String playerMove = inputScanner.nextLine();
-                        int row = Integer.parseInt(playerMove.substring(0, 1));
-                        int col = Integer.parseInt(playerMove.substring(2, 3));
-
-                        // Validate and make the move
-                        if (isValidMove(gameBoard, row, col)) {
-                            gameBoard[row][col] = "X";
-                            break;
-                        } else {
-                            System.out.println("Invalid move. Try again.");
-                        }
-                    }
-                } else {
-                    // Player O's turn (bot)
-                    System.out.println("Player O, make your move (row, col):");
-                    while (true) {
-                        int randomRow = getRandomNumber();
-                        int randomCol = getRandomNumber();
-
-                        // Validate and make the move
-                        if (isValidMove(gameBoard, randomRow, randomCol)) {
-                            gameBoard[randomRow][randomCol] = "O";
-                            break;
-                        }
-                    }
-                }
-                currentRound++;
-            }
-
-            // Ask if the players want to play again
-            System.out.println("Play again? (Y/N)");
-            String playAgain = inputScanner.nextLine().toLowerCase();
-
-            if (playAgain.equals("n")) {
-                break;
-            } else if (playAgain.equals("y")) {
-                // Reset the game for a new round
-                currentRound = 1;
-                gameBoard = initializeBoard(gameBoard);
+    TicTacToe() {
+        
+    }
+    // Initialize the game board with empty spaces
+    public static String[][] initializeBoard(String[][] board) {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                board[i][j] = " ";
             }
         }
+        return board;
     }
-
+    // Display the current state of the game board
+    public static void displayBoard(String[][] board) {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                System.out.print("[" + board[i][j] + "]");
+            }
+            System.out.println();
+        }
+    }
     // Check if the game is complete 
     public static boolean isGameComplete(String[][] board) {
         // Check rows and columns for a winner
@@ -95,17 +53,7 @@ public class TicTacToe {
         System.out.println("It's a draw!");
         return true;
     }
-
-    // Initialize the game board with empty spaces
-    public static String[][] initializeBoard(String[][] board) {
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                board[i][j] = " ";
-            }
-        }
-        return board;
-    }
-
+    
     public static boolean checkRow(String[][] board, int row, String player) {
         return board[row][0].equals(player) && board[row][1].equals(player) && board[row][2].equals(player);
     }
@@ -147,14 +95,69 @@ public class TicTacToe {
     public static int getRandomNumber() {
         return (int) (Math.random() * 3);
     }
+    
+    public static void main(String[] args) {
+        Scanner inputScanner = new Scanner(System.in);
+        String[][] gameBoard = new String[3][3];
+        gameBoard = initializeBoard(gameBoard);
+        int currentRound = 1;
+        boolean PlayingGame = true;
+        //Make it run at all times to play the game until something happens
+        while (currentRound < 15) {
+            while (PlayingGame) {
+                // Display currentround and the game board
+                System.out.println("Round " + currentRound + ":");
+                displayBoard(gameBoard);
 
-    // Display the current state of the game board
-    public static void displayBoard(String[][] board) {
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                System.out.print("[" + board[i][j] + "]");
+                // Check if the game is complete
+                if (isGameComplete(gameBoard)) {
+                    break;
+                }
+
+                // Player X's turn
+                if (currentRound % 2 != 0) {
+                    while (PlayingGame) {
+                        System.out.println("Player X, make your move (row, col):");
+                        String playerMove = inputScanner.nextLine();
+                        int row = Integer.parseInt(playerMove.substring(0, 1));
+                        int col = Integer.parseInt(playerMove.substring(2, 3));
+
+                        // Validate and make the move
+                        if (isValidMove(gameBoard, row, col)) {
+                            gameBoard[row][col] = "X";
+                            break;
+                        } else {
+                            System.out.println("Invalid move. Try again.");
+                        }
+                    }
+                } else {
+                    // Player O's turn (bot)
+                    System.out.println("Player O, make your move (row, col):");
+                    while (PlayingGame) {
+                        int randomRow = getRandomNumber();
+                        int randomCol = getRandomNumber();
+
+                        // Validate and make the move
+                        if (isValidMove(gameBoard, randomRow, randomCol)) {
+                            gameBoard[randomRow][randomCol] = "O";
+                            break;
+                        }
+                    }
+                }
+                currentRound++;
             }
-            System.out.println();
+
+            // Ask if the players want to play again
+            System.out.println("Want to play again? (Y/N)");
+            String playAgain = inputScanner.nextLine().toLowerCase();
+
+            if (playAgain.equals("n")) {
+                break;
+            } else if (playAgain.equals("y")) {
+                // Reset the game for a new round
+                currentRound = 1;
+                gameBoard = initializeBoard(gameBoard);
+            }
         }
     }
 }
